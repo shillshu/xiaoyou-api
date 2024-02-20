@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Fellow">
+        select p.* from xy_fellow p
+        WHERE
+        1=1
+        <if test="fellow!=null">
+            <if test="fellow.xm!=null and fellow.xm!=''">
+                and p.xm = #{fellow.xm}
+            </if>
+            <if test="fellow.xb!=null and fellow.xb!=''">
+                and p.xb = #{fellow.xb}
+            </if>
+            <if test="fellow.xy!=null and fellow.xy!=''">
+                and exists ( select 1 from xy_fellow_education e where p.id = e.data_id and e.xy = #{fellow.xy})
+            </if>
+        </if>
+        order by p.xm
+    </select>
+
+    <select id="queryExportList" resultType="cn.sibetech.fellow.domain.Fellow">
+        select p.*
+        , e.qssj jy_qssj, e.zzsj jy_zzsj, e.xl jy_xl, e.xh jy_xh, e.xy jy_xy, e.zy jy_zy, e.bj jy_bj, e.ds jy_ds
+        , r.qssj gz_qssj, r.zzsj gz_zzsj, r.gzdw gz_gzdw , r.zw gz_zw, r.hy gz_hy , r.gznr gz_gznr, r.jzcs gz_jzcs, r.zc gz_zc
+        from xy_fellow p
+        left join ( select data_id,  wm_concat(e.qssj) qssj ,wm_concat(e.zzsj) zzsj ,wm_concat(e.xl) xl, wm_concat(e.xh) xh ,wm_concat(e.xy) xy ,wm_concat(e.zy) zy ,wm_concat(e.bj) bj ,wm_concat(e.ds) ds  from xy_fellow_education e group by data_id ) e on p.id = e.data_id
+        left join (  select data_id, wm_concat(r.qssj) qssj ,wm_concat(r.zzsj) zzsj ,wm_concat(r.gzdw) gzdw, wm_concat(r.zw) zw ,wm_concat(r.hy) hy ,wm_concat(r.gznr) gznr ,wm_concat(r.jzcs) jzcs ,wm_concat(r.zc) zc
+        from xy_fellow_resume r  group by data_id) r on  p.id = r.data_id
+        WHERE
+        1=1
+        <if test="fellow!=null">
+            <if test="fellow.xm!=null and fellow.xm!=''">
+                and p.xm = #{fellow.xm}
+            </if>
+            <if test="fellow.xb!=null and fellow.xb!=''">
+                and p.xb = #{fellow.xb}
+            </if>
+            <if test="fellow.xy!=null and fellow.xy!=''">
+                and e.xy like  '%'||#{fellow.xy}||'%'
+            </if>
+        </if>
+        order by p.xm
+        </select>
+
+    <select id="findList" resultType="cn.sibetech.fellow.domain.Fellow">
+        select p.* from xy_fellow p
+        WHERE
+        1=1
+        <if test="fellow!=null">
+            <if test="fellow.xm!=null and fellow.xm!=''">
+                and p.xm = #{fellow.xm}
+            </if>
+            <if test="fellow.xb!=null and fellow.xb!=''">
+                and p.xb = #{fellow.xb}
+            </if>
+            <if test="fellow.csrq!=null and fellow.csrq!=''">
+                and to_date(p.csrq, 'yyyy-MM-dd') = to_date(#{fellow.csrq}, 'yyyy-MM-dd')
+            </if>
+        </if>
+    </select>
+    <select id="findByXmAndRxsj" resultType="cn.sibetech.fellow.domain.Fellow">
+        select f.id, f.xm, f.csrq, e.xl  from xy_fellow f,  xy_fellow_education e  where  f.id = e.data_id
+                         and ( substr(qssj, 1, 4) =  #{rxnf}  or  substr(zzsj, 1, 4) = #{bynf}  )  and  xm = #{xm}
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 1234!@#$qwerQWER
+    database: 0
+    timeout: 2000
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@192.168.100.32:1521:sibe
+    username: xg_base
+    password: sibe2016
+    druid:
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 2000
+flowable:
+  async-executor-activate: false
+  database-schema-update: false
+sys:
+  # 静态资源路径
+  static-path: D:/code/tuimian/xg-tuimian-api/src/main/resources
+  # 静态资源分离开关
+  static-active: false
+  perm-service: xiaoyou

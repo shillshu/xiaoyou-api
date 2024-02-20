@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.core.mapper.UserMapper">
+    <select id="selectByUsername" resultType="cn.sibetech.core.domain.User">
+        select s.*,d.name as dept_name from p_user s left join p_dept d on d.id = s.dept_id where s.username=#{username}
+    </select>
+
+    <select id="queryDeptUser" resultType="string">
+        select t.id from p_user t, p_user_role s where t.id=s.user_id and s.role_id=#{roleId} and t.dept_id=#{deptId}
+    </select>
+    <select id="queryRoleUser" resultType="string">
+        select t.id from p_user t, p_user_role s where t.id=s.user_id and s.role_id=#{roleId}
+    </select>
+    <select id="selectDeptList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, name as label from p_dept
+        where flag='0'
+        <if test="fatherId!=null and fatherId!=''">
+            and father_id = #{fatherId}
+        </if>
+        order by order_number
+    </select>
+    <select id="queryPage" resultType="cn.sibetech.core.domain.User">
+        select s.*,d.name as dept_name from p_user s
+            left join p_dept d on d.id = s.dept_id
+        <where>
+            <if test="dto!=null">
+                <if test="dto.username!=null and dto.username!=''">
+                    and s.username like concat(concat('%',#{dto.username}),'%')
+                </if>
+                <if test="dto.truename!=null and dto.truename!=''">
+                    and s.truename like concat(concat('%',#{dto.truename}),'%')
+                </if>
+                <if test="dto.deptId!=null and dto.deptId!='' and dto.deptIdList !=null">
+                    and s.dept_id in
+                    <foreach collection="dto.deptIdList" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="dto.usertype!=null and dto.usertype!=''">
+                    and s.usertype = #{dto.userType}
+                </if>
+                <if test="dto.status!=null and dto.status!=''">
+                    and s.status = #{dto.status}
+                </if>
+            </if>
+        </where>
+        order by s.username
+    </select>
+    <select id="queryByIds" resultType="cn.sibetech.core.domain.User">
+        select p.id,p.username,p.truename,listagg(pd.name, ',') within group(order by pd.order_number)  as dept_name from p_user p
+        left join p_user_dept d on p.id = d.user_id
+        left join p_dept pd on pd.id=d.dept_id
+        where p.id in
+        <foreach item="userId" collection="userIds" separator="," open="(" close=")" index="">
+            #{userId,jdbcType=VARCHAR}
+        </foreach>
+        group by p.id,p.username,p.truename
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.SmsMsgMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.SmsMsg">
+        select p.*, s.count
+         from xy_sms_msg  p left join ( select msg_id, count(*) count from  xy_sms_user u where status = '1'  group by msg_id ) s on p.id = s.msg_id
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.senderId!=null and dto.senderId!=''">
+                and p.send_id = #{dto.senderId}
+            </if>
+            <if test="dto.ksrq!=null and dto.ksrq!=''">
+                and to_char(p.when_created, 'yyyy-MM-dd' ) &gt;= #{dto.ksrq}
+            </if>
+            <if test="dto.jsrq!=null and dto.jsrq!=''">
+                and to_char(p.when_created, 'yyyy-MM-dd' ) &lt;= #{dto.jsrq}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+</mapper>

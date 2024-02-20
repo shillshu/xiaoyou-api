@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowVipMemberMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Fellow">
+        select p.* from xy_fellow p, xy_fellow_vip_member m
+        WHERE
+        p.id = m.fellow_id and m.kind_id = #{kindId}
+        <if test="dto!=null">
+            <if test="dto.xm!=null and dto.xm!=''">
+                and p.xm = #{dto.xm}
+            </if>
+        </if>
+    </select>
+</mapper>

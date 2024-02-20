@@ -1,0 +1,145 @@
+[
+  {
+    "name": "校友信息",
+    "icon": "iconfont icon-xitongshezhi",
+    "value": "",
+    "subPerms": [
+      {
+        "name": "校友管理",
+        "value": "fellow:manage"
+      },
+      {
+        "name": "校友信息同步",
+        "value": "fellowStudent:manage"
+      },
+      {
+        "name": "重点校友管理",
+        "value": "fellow:zdmanage"
+      },
+      {
+        "name": "校友通讯",
+        "value": "fellow:txmanage"
+      },
+      {
+        "name": "校友认证",
+        "value": "fellow:rzmanage"
+      },
+      {
+        "name": "校友联络",
+        "value": "fellow:llmanage"
+      },
+      {
+        "name": "校友通讯分组",
+        "value": "group:manage"
+      },
+      {
+        "name": "校友分组成员",
+        "value": "groupMember:manage"
+      },
+      {
+        "name": "下载任务",
+        "value": "sys:downexcel"
+      }
+    ]
+  },
+  {
+    "name": "校友捐赠",
+    "icon": "iconfont icon-xitongshezhi",
+    "value": "",
+    "subPerms": [
+      {
+        "name": "捐赠项目",
+        "value": "jzxm:manage"
+      },
+      {
+        "name": "捐赠信息",
+        "value": "jzinfo:manage"
+      }
+    ]
+  },
+  {
+    "name": "校友活动",
+    "icon": "iconfont icon-xitongshezhi",
+    "value": "",
+    "subPerms": [
+      {
+        "name": "校友类别",
+        "value": "hdlb:manage"
+      },
+      {
+        "name": "校友活动",
+        "value": "hdinfo:manage"
+      },
+      {
+        "name": "活动签到",
+        "value": "hdqd:manage"
+      }
+    ]
+  },
+  {
+    "name": "校友会",
+    "icon": "iconfont icon-xitongshezhi",
+    "value": "",
+    "subPerms": [
+      {
+        "name": "院系校友",
+        "value": "yxxyh:manage"
+      },
+      {
+        "name": "地方校友",
+        "value": "dfxyh:manage"
+      }
+    ]
+  },
+  {
+    "name": "系统设置",
+    "icon": "iconfont icon-xitongshezhi",
+    "value": "",
+    "subPerms": [
+      {
+        "name": "系统管理",
+        "value": "system:manage"
+      },
+      {
+        "name": "系统数据删除",
+        "value": "system:remove"
+      },
+      {
+        "name": "系统配置",
+        "value": "config:manage"
+      },
+      {
+        "name": "部门管理",
+        "value": "dept:manage"
+      },
+      {
+        "name": "角色管理",
+        "value": "role:manage"
+      },
+      {
+        "name": "用户管理",
+        "value": "user:manage"
+      },
+      {
+        "name": "修改密码",
+        "value": "user:updatePassword"
+      },
+      {
+        "name": "重置密码",
+        "value": "user:resetPassword"
+      },
+      {
+        "name": "菜单管理",
+        "value": "menu:manage"
+      },
+      {
+        "name": "字典管理",
+        "value": "code:manage"
+      },
+      {
+        "name": "日志管理",
+        "value": "log:manage"
+      }
+    ]
+  }
+]

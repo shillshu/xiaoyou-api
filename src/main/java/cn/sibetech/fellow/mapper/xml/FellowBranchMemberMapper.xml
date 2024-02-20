@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowBranchMemberMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Fellow">
+        select p.* from xy_fellow p, xy_fellow_branch_member m
+        WHERE
+        p.id = m.fellow_id and m.branch_id = #{branchId}
+        <if test="dto!=null">
+            <if test="dto.xm!=null and dto.xm!=''">
+                and p.xm = #{dto.xm}
+            </if>
+        </if>
+    </select>
+
+    <select id="queryList" resultType="cn.sibetech.fellow.domain.FellowBranchMember">
+        select p.* from xy_fellow_Branch_member p
+        WHERE
+        1=1
+        <if test="member!=null">
+            <if test="member.branchId!=null and member.branchId!=''">
+                and p.branch_id = #{member.branchId}
+            </if>
+            <if test="member.fellowId!=null and member.fellowId!=''">
+                and p.fellow_id = #{member.fellowId}
+            </if>
+        </if>
+    </select>
+</mapper>

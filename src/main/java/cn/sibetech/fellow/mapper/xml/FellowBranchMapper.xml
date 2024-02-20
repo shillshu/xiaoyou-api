@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowBranchMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.FellowBranch">
+        select p.* from xy_fellow_Branch p
+        WHERE
+        1=1
+        <if test="branch!=null">
+            <if test="branch.fatherId!=null and branch.fatherId!=''">
+                and p.father_id = #{branch.fatherId}
+            </if>
+            <if test="branch.name!=null and branch.name!=''">
+                and p.name = #{branch.name}
+            </if>
+            <if test="branch.owner!=null and branch.owner!=''">
+                and p.owner = #{branch.owner}
+            </if>
+            <if test="branch.type!=null and branch.type!=''">
+                and p.type = #{branch.type}
+            </if>
+        </if>
+    </select>
+
+    <select id="queryList" resultType="cn.sibetech.fellow.domain.FellowBranch">
+        select p.* from xy_fellow_Branch p
+        WHERE
+        1=1
+        <if test="branch!=null">
+            <if test="branch.fatherId!=null and branch.fatherId!=''">
+                and p.father_id = #{branch.fatherId}
+            </if>
+            <if test="branch.name!=null and branch.name!=''">
+                and p.name = #{branch.name}
+            </if>
+            <if test="branch.owner!=null and branch.owner!=''">
+                and p.owner = #{branch.owner}
+            </if>
+            <if test="branch.type!=null and branch.type!=''">
+                and p.type = #{branch.type}
+            </if>
+        </if>
+    </select>
+
+    <select id="queryFellowBranchList" resultType="cn.sibetech.fellow.domain.FellowBranch">
+        select p.* from xy_fellow_Branch p, xy_fellow_Branch_member m
+        WHERE
+        p.id = m.branch_id and m.fellow_id = #{fellowId}
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.SmsUserMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.SmsUser">
+        select p.*  from xy_sms_user  p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.msgId!=null and dto.msgId!=''">
+                and p.msg_id = #{dto.msgId}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+
+    <select id="queryUserPage" resultType="cn.sibetech.fellow.domain.FellowAuthInfo">
+        select p.* , u.status from xy_fellow_authinfo p, xy_sms_user u
+        WHERE
+        p.id = u.user_id and u.msg_id =  #{msgId}
+        <if test="dto!=null">
+            <if test="dto.xm!=null and dto.xm!=''">
+                and p.xm = #{dto.xm}
+            </if>
+            <if test="dto.xy!=null and dto.xy!=''">
+                and p.xy = #{dto.xy}
+            </if>
+            <if test="dto.zt!=null and dto.zt!=''">
+                and p.zt = #{dto.zt}
+            </if>
+        </if>
+    </select>
+</mapper>

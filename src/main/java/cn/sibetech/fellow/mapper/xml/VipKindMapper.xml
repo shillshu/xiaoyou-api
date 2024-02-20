@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.VipKindMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.VipKind">
+        select p.* from xy_vip_kind p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.owner!=null and dto.owner!=''">
+                and p.owner = #{dto.owner}
+            </if>
+            <if test="dto.ownerType!=null and dto.ownerType!=''">
+                and p.owner_type = #{dto.ownerType}
+            </if>
+        </if>
+        order by orderno
+    </select>
+
+    <select id="findList" resultType="cn.sibetech.fellow.domain.VipKind">
+        select p.* from xy_vip_kind p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.owner!=null and dto.owner!=''">
+                and p.owner = #{dto.owner}
+            </if>
+            <if test="dto.ownerType!=null and dto.ownerType!=''">
+                and p.owner_type = #{dto.ownerType}
+            </if>
+        </if>
+        order by orderno
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.DonationItemMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.DonationItem">
+        select p.* , nvl(d.jzje, 0) jzje, nvl(d.rs, 0) rs, nvl(dept.name, p.owner) owner_name from xy_donation_item p left join
+         ( select item_id, sum(jzje) as jzje,sum(1) as rs FROM xy_donation d where d.status = '1' group by d.item_id ) d
+        on p.id = d.item_id left join p_dept dept on p.owner = dept.id
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.owner!=null and dto.owner!=''">
+                and p.owner = #{dto.owner}
+            </if>
+            <if test="dto.valid!=null and dto.valid!=''">
+                and p.valid = #{dto.valid}
+            </if>
+            <if test="dto.ownerType!=null and dto.ownerType!=''">
+                and p.owner_type = #{dto.ownerType}
+            </if>
+        </if>
+        order by p.code
+    </select>
+</mapper>

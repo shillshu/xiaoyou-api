@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.core.mapper.BizFieldMapper">
+    <select id="queryList" resultType="cn.sibetech.core.domain.BizField">
+        select t.* from p_biz_field t
+        where  1 = 1
+        <if test="field!=null">
+            <if test="field.bizId!=null and field.bizId!=''">
+                and t.biz_id = #{field.bizId}
+            </if>
+            <if test="field.isDisplay!=null and field.isDisplay!=''">
+                and t.is_display = #{field.isDisplay}
+            </if>
+        </if>
+        order by orderno
+    </select>
+</mapper>

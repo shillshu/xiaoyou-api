@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.SignMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Sign">
+        select m.*,m.jhqdrs -m.yqdrs AS dqdrs from( SELECT pc.id AS id,pc.name,pc.activity_id, pc.sffpxy, pc.sfglhd, t.name AS activity_name, pc.JHQDRS AS jhqdrs,pc.status as status,
+        pc.YQDRS AS yqdrs, sum(CASE WHEN t2.jh_status = '2' and t2.status ='1' THEN 1 ELSE 0 end) as jhwrs
+        FROM xy_sign_pc pc LEFT JOIN xy_activity t ON t.id = pc.ACTIVITY_ID LEFT JOIN xy_sign_fellow t2 ON t2.PC_ID = pc.ID
+        GROUP BY pc.id, pc.activity_id, pc.sffpxy, pc.sfglhd,  pc.name ,t.name, pc.status, pc.JHQDRS, pc.YQDRS,pc.when_created  ORDER BY pc.when_created desc)m
+    </select>
+</mapper>

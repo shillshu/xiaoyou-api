@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.XyConfigMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.XyConfig">
+        select p.* from xy_config p
+        where 1=1
+        <if test="config!=null">
+            <if test="config.remark!=null and config.remark!=''">
+                and p.remark like '%'||#{config.remark}||'%'
+            </if>
+        </if>
+        order by when_created desc
+    </select>
+
+</mapper>

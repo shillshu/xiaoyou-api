@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.DonationMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Donation">
+        select p.*,  nvl(p.xm, p.entername) jzrxm from xy_donation p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.itemId!=null and dto.itemId!=''">
+                and p.item_id = #{dto.itemId}
+            </if>
+            <if test="dto.jzfs!=null and dto.jzfs!=''">
+                and p.jzfs = #{dto.jzfs}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+        </if>
+        order by when_created desc
+    </select>
+
+    <select id="queryPageNotZs" resultType="cn.sibetech.fellow.domain.Donation">
+        select p.*,  nvl(p.xm, p.entername) jzrxm from xy_donation p
+        WHERE
+        p.zs_path is null
+        <if test="dto!=null">
+            <if test="dto.itemId!=null and dto.itemId!=''">
+                and p.item_id = #{dto.itemId}
+            </if>
+            <if test="dto.jzfs!=null and dto.jzfs!=''">
+                and p.jzfs = #{dto.jzfs}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+        </if>
+        order by when_created desc
+    </select>
+
+    <select id="findList" resultType="cn.sibetech.fellow.domain.Donation">
+        select p.* ,  nvl(p.xm, p.entername) jzrxm from xy_donation p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.itemId!=null and dto.itemId!=''">
+                and p.item_id = #{dto.itemId}
+            </if>
+            <if test="dto.jzfs!=null and dto.jzfs!=''">
+                and p.jzfs = #{dto.jzfs}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+        </if>
+        order by  when_created desc
+    </select>
+
+    <select id="findTjList" resultType="Map">
+        SELECT COUNT(1) AS cyrs,SUM(t.JZJE) AS jzje FROM xy_donation t,xy_donation_item t1
+               WHERE t.item_id = t1.id and t1.VALID = '有效' and t.status = '1'
+        <if test="itemId!=null and itemId!=''">
+            and t1.id = #{itemId}
+        </if>
+    </select>
+
+    <select id="findXyTjList" resultType="Map">
+        SELECT sum(t.JZJE) as jzje,COUNT(1) AS cyrs,case when t.xy is null then '其他' else t.xy end as xyName from xy_donation t left join xy_order t1
+        on  t1.order_no = t.ORDER_NO and t1.status ='1' where 1 = 1 and t1.status ='1'
+        <if test="itemId!=null and itemId!=''">
+            and t.item_id = #{itemId}
+        </if>
+        GROUP by t.xy ORDER BY jzje desc
+    </select>
+
+    <select id="getXyDonationList" resultType="Map">
+        SELECT t.id as donationItemId, t.zs, t1.id as donationId,t1.zs_path, t.zp as zp,t.name as itemName,t.DESCRIPTION as descrtion,t1.JZJE as jzje,t1.EMAIL as email,t1.tel as tel,t1.JZSJ as jzsj,t1.BZ as bz
+        FROM xy_donation_item t,xy_donation t1  ,xy_order t2
+         WHERE t1.item_id = t.id and t2.order_no = t1.order_no and t.VALID = '有效' and t2.status ='1' AND t1.open_id=#{openId} order by jzsj desc
+    </select>
+
+    <select id="queryMaxCode" resultType="java.lang.String">
+        select max(code) code from xy_donation where code like #{day,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

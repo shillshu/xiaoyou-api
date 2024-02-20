@@ -1,0 +1,63 @@
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/javascript,text/css,text/plain
+  tomcat:
+    accesslog:
+      enabled: true
+      pattern: '%{X-Forwarded-For}i %h %l %u %t "%r" %s %b %D %{User-Agent}i'
+  forward-headers-strategy: native
+  servlet:
+    context-path: /ceping_api
+  port: 10017
+spring:
+  application:
+    name: ceping-api
+  profiles:
+    active: dev
+  mvc:
+    static-path-pattern: /static/**
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  freemarker:
+    request-context-attribute: rc
+    content-type: text/html
+    charset: utf-8
+    cache: true
+    suffix: .html
+    settings:
+      template_update_delay: 0
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      number_format: #.###
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1024MB
+mybatis-plus:
+  mapper-locations: classpath*:cn/sibetech/**/mapper/**/*.xml
+  type-aliases-package: cn.sibetech.**.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+shiro:
+  filters:
+    "[/cas/**]": anon
+    "[/api/**]": anon
+    "[/doc.html]": anon
+    "[/swagger-ui.html**]": anon
+    "[/swagger-resources/**]": anon
+    "[/v2/api-docs]": anon
+    "[/webjars/**]": anon
+logging:
+  level:
+    org.apache.tomcat: debug
+    org.apache.catalina: debug
+  config: classpath:logback-spring.xml
+knife4j:
+  enable: true
+  setting:
+    enableDebug: false
+  title: 测评
+  package: cn.sibetech.core.controller

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowResumeMapper">
+    <select id="queryList" resultType="cn.sibetech.fellow.domain.FellowResume">
+        select p.* from xy_fellow_resume p
+        WHERE
+        1=1
+        <if test="resume!=null">
+            <if test="resume.dataId!=null and resume.dataId!=''">
+                and p.data_id = #{resume.dataId}
+            </if>
+        </if>
+    </select>
+
+    <select id="queryByDataId" resultType="cn.sibetech.fellow.domain.FellowResume">
+        select p.* from xy_fellow_resume p
+        WHERE p.data_id = #{dataId}
+    </select>
+</mapper>

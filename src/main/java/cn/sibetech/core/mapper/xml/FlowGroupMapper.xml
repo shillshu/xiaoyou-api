@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.core.mapper.FlowGroupMapper">
+    <select id="queryForUser" resultType="cn.sibetech.core.domain.FlowGroup">
+        select s.* from p_flow_group s
+        where s.STATUS='1' and exists (
+            select 1 from p_flow_group_user t where t.group_id=s.id and t.user_id=#{userId}
+        )
+        order by s.ORDER_NUMBER
+    </select>
+    <select id="queryUserList" resultType="cn.sibetech.core.domain.User">
+        select u.id,u.username,u.truename from p_flow_group_user s left join p_user u on u.id = s.user_id
+        where exists
+        (select 1 from p_flow_group t where t.id=s.group_id and t.status='1'
+        and t.name in
+        <foreach item="item" collection="groups" separator="," open="(" close=")" index="">
+            #{item}
+        </foreach>
+        )
+    </select>
+</mapper>

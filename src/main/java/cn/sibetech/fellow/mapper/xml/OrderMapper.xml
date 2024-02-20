@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.OrderMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Order">
+        select p.* from xy_order p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.itemId!=null and dto.itemId!=''">
+                and p.item_id = #{dto.itemId}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+        </if>
+    </select>
+
+    <select id="findList" resultType="cn.sibetech.fellow.domain.Donation">
+        select p.* from xy_order p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.itemId!=null and dto.itemId!=''">
+                and p.item_id = #{dto.itemId}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FileDownMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.FileDown">
+        select p.* from p_file_down p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.lb!=null and dto.lb!=''">
+                and p.lb = #{dto.lb}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+            <if test="dto.kfzt!=null and dto.kfzt!=''">
+                and p.kfzt = #{dto.kfzt}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+</mapper>

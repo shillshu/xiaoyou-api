@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.MessageDetailMapper">
+    <select id="findList" resultType="cn.sibetech.fellow.domain.MessageDetail">
+        SELECT t1.*, f.XM FROM xy_message_relation t,xy_message_detail t1,xy_fellow f WHERE t.id = t1.relation_id and t1.fellow_id = f.id
+         and t1.parent_id is null
+        <if test="dto!=null">
+            <if test="dto.receiveId!=null and dto.receiveId!=''">
+                and t.receive_id = #{dto.receiveId}
+            </if>
+            <if test="dto.relationId!=null and dto.relationId!=''">
+                and t.id = #{dto.relationId}
+            </if>
+            <if test="dto.sendId!=null and dto.sendId!=''">
+                and t.send_id = #{dto.sendId}
+            </if>
+        </if>
+        order by t1.when_created
+    </select>
+
+    <select id="findByParentId" resultType="cn.sibetech.fellow.domain.MessageDetail">
+        SELECT t1.*, f.XM FROM xy_message_detail t1,xy_fellow f WHERE t1.fellow_id = f.id and t1.parent_id = #{parentId}
+        order by t1.when_created
+    </select>
+
+    <select id="findSendList" resultType="cn.sibetech.fellow.domain.MessageDetail">
+        SELECT t1.receive_id, d.*, t1.send_id,f.XM FROM xy_message_relation t1,xy_message_detail d, xy_fellow f WHERE 1 = 1
+        and t1.receive_id = f.id and t1.send_id  = #{fellowId} and t1.id = d.relation_id
+        ORDER BY t1.when_created desc
+    </select>
+
+    <select id="findReceiveList" resultType="cn.sibetech.fellow.domain.MessageDetail">
+        SELECT t1.receive_id,t1.send_id, d.*, f.XM FROM xy_message_relation t1,xy_message_detail d, xy_fellow f WHERE 1 = 1
+        and t1.send_id = f.id and t1.receive_id   = #{fellowId} and t1.id = d.relation_id
+        ORDER BY t1.when_created desc
+    </select>
+
+    <select id="findMyMsgList" resultType="cn.sibetech.fellow.domain.MessageDetail">
+        SELECT t1.* from xy_message_relation t,xy_message_detail t1 where t1.relation_id = t.id and  (t.receive_id = #{fellowId} or t.send_id =  #{fellowId}) and t1.fellow_id !=  #{fellowId}
+        ORDER BY t1.when_created desc
+    </select>
+</mapper>

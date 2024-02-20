@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.SmsMsgNoticeMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.SmsMsgNotice">
+        select p.*  from xy_sms_msg_notice  p
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.userId!=null and dto.userId!=''">
+                and p.user_id = #{dto.userId}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+</mapper>

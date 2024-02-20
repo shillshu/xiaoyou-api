@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.ActivityFellowMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.ActivityFellow">
+        select p.* , f.xm fellow_xm  from xy_activity_fellow p left join xy_fellow f on p.fellow_id = f.id
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.activityId!=null and dto.activityId!=''">
+                and p.activity_id = #{dto.activityId}
+            </if>
+            <if test="dto.sfxyydfj!=null and dto.sfxyydfj!=''">
+                and p.sfxyydfj = #{dto.sfxyydfj}
+            </if>
+            <if test="dto.sfxyjz!=null and dto.sfxyjz!=''">
+                and p.sfxyjz = #{dto.sfxyjz}
+            </if>
+            <if test="dto.fellowXm!=null and dto.fellowXm!=''">
+                and f.xm = #{dto.fellowXm}
+            </if>
+            <if test="dto.isValid!=null and dto.isValid!=''">
+                and p.is_valid = #{dto.isValid}
+            </if>
+        </if>
+        order by f.xm desc
+    </select>
+
+
+    <select id="queryFellowList" resultType="cn.sibetech.fellow.domain.FellowAuthInfo">
+        select f.* from xy_activity_fellow p  , xy_fellow_authinfo f where p.fellow_id = f.fellow_id
+        AND p.activity_id IN
+        <foreach item="item" index="index" collection="activityId" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by f.xm desc
+    </select>
+
+</mapper>

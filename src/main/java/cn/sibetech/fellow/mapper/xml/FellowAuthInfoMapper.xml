@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowAuthInfoMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.FellowAuthInfo">
+        select p.*, d.name xy_name from xy_fellow_authinfo p left join p_dept d on p.xy_id = d.id
+        WHERE
+        1=1
+        <if test="info!=null">
+            <if test="info.xm!=null and info.xm!=''">
+                and p.xm = #{info.xm}
+            </if>
+            <if test="info.xb!=null and info.xb!=''">
+                and p.xb = #{info.xb}
+            </if>
+            <if test="info.xy!=null and info.xy!=''">
+                and p.xy = #{info.xy}
+            </if>
+            <if test="info.xyName!=null and info.xyName!=''">
+                and d.name = #{info.xyName}
+            </if>
+            <if test="info.xyIds!=null and info.xyIds.length gt 0 ">
+                and p.xy_id in
+                <foreach item="item" index="index" collection="info.xyIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="info.zts!=null and info.zts.length gt 0 ">
+                and p.zt in
+                <foreach item="item" index="index" collection="info.zts" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="info.rxnf!=null and info.rxnf!=''">
+                and p.rxnf = #{info.rxnf}
+            </if>
+            <if test="info.xylx!=null and info.xylx!=''">
+                and p.xylx = #{info.xylx}
+            </if>
+        </if>
+    </select>
+
+    <select id="queryCount" resultType="Integer">
+        select count(*) count from xy_fellow_authinfo p  left join p_dept d on p.xy_id = d.id
+        WHERE
+        1=1
+        <if test="info!=null">
+            <if test="info.xm!=null and info.xm!=''">
+                and p.xm = #{info.xm}
+            </if>
+            <if test="info.xb!=null and info.xb!=''">
+                and p.xb = #{info.xb}
+            </if>
+            <if test="info.xy!=null and info.xy!=''">
+                and p.xy = #{info.xy}
+            </if>
+            <if test="info.xyName!=null and info.xyName!=''">
+                and d.name = #{info.xyName}
+            </if>
+            <if test="info.xyIds!=null and info.xyIds.length gt 0 ">
+                and p.xy_id in
+                <foreach item="item" index="index" collection="info.xyIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="info.zts!=null and info.zts.length gt 0 ">
+                and p.zt in
+                <foreach item="item" index="index" collection="info.zts" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="info.rxnf!=null and info.rxnf!=''">
+                and p.rxnf = #{info.rxnf}
+            </if>
+            <if test="info.xylx!=null and info.xylx!=''">
+                and p.xylx = #{info.xylx}
+            </if>
+        </if>
+    </select>
+
+
+    <select id="queryData" resultType="java.util.Map" statementType="STATEMENT">
+        ${sqlStr}
+    </select>
+
+    <update id="updateData" parameterType="java.lang.String" statementType="STATEMENT" >
+        ${sqlStr}
+    </update>
+</mapper>

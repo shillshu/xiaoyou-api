@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.core.mapper.SelectMapper">
+    <select id="selectDeptList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, name as label from p_dept
+        where flag='0'
+        <if test="fatherId!=null and fatherId!=''">
+            and father_id = #{fatherId}
+        </if>
+        order by order_number
+    </select>
+
+    <select id="selectXueyuanList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, name as label from p_dept
+        where is_jxdw = '1'
+        order by order_number
+    </select>
+
+    <select id="selectMajorList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, zy as label from p_major
+        <where>
+            <if test="xyId!=null and xyId!=''">
+                and xy_id = #{xyId}
+            </if>
+        </where>
+        order by zyh
+    </select>
+
+    <select id="selectClassList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, bjmc as label from p_class
+        where is_use = '1'
+        <if test="xyId!=null and xyId!=''">
+            and xy_id = #{xyId}
+        </if>
+        <if test="zyId!=null and zyId!=''">
+            and major_id = #{zyId}
+        </if>
+        <if test="nj!=null and nj!=''">
+            and nj = #{nj}
+        </if>
+        order by bh
+    </select>
+
+    <select id="selectCodeItemList" resultType="cn.sibetech.core.domain.SelectModel">
+        select id as value, item_name as label from p_code_item
+            where kind_id = #{codeKindId}
+           order by order_no
+    </select>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.SignFellowMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.SignFellow">
+        select p.* , f.name qd_name , d.name qddd,
+        a.xm , a.xb, a.qq, a.sj, a.xy, a.rxnf from xy_sign_fellow  p left join xy_sign_pc f on p.pc_id = f.id
+        left join p_dept d on p.dept_id = d.id left join xy_fellow_authinfo a on p.fellow_id = a.fellow_id
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.fellowId!=null and dto.fellowId!=''">
+                and p.fellow_id = #{dto.fellowId}
+            </if>
+            <if test="dto.pcId!=null and dto.pcId!=''">
+                and p.pc_id = #{dto.pcId}
+            </if>
+            <if test="dto.deptId!=null and dto.deptId!=''">
+                and p.dept_id = #{dto.deptId}
+            </if>
+            <if test="dto.xy!=null and dto.xy!=''">
+                and a.xy = #{dto.xy}
+            </if>
+            <if test="dto.status!=null and dto.status!=''">
+                and p.status = #{dto.status}
+            </if>
+            <if test="dto.jhStatus!=null and dto.jhStatus!=''">
+                and p.jh_status = #{dto.jhStatus}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+
+    <select id="queryWqdPage" resultType="cn.sibetech.fellow.domain.SignFellow">
+        select p.id , f.name qd_name , '' qddd, af.fellow_id,
+        a.xm , a.xb, a.qq, a.sj, a.xy, a.rxnf from xy_sign_pc  f
+        left join xy_activity_fellow af   on af.activity_id = f.activity_id
+        left join xy_sign_fellow p on p.pc_id = f.id and p.fellow_id = af.fellow_id
+       left join xy_fellow_authinfo a on af.fellow_id = a.fellow_id
+        WHERE af.is_valid = '0' and
+        nvl(p.status, '2') = '2'
+        <if test="dto!=null">
+            <if test="dto.fellowId!=null and dto.fellowId!=''">
+                and af.fellow_id = #{dto.fellowId}
+            </if>
+            <if test="dto.pcId!=null and dto.pcId!=''">
+                and f.id = #{dto.pcId}
+            </if>
+            <if test="dto.deptId!=null and dto.deptId!=''">
+                and p.dept_id = #{dto.deptId}
+            </if>
+            <if test="dto.xy!=null and dto.xy!=''">
+                and a.xy = #{dto.xy}
+            </if>
+            <if test="dto.jhStatus!=null and dto.jhStatus!=''">
+                and p.jh_status = #{dto.jhStatus}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.FellowStudentMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.FellowStudent">
+        select p.* from xy_fellow_student p left join xy_fellow_education t on p.xh = t.xh left join xy_fellow f on t.data_id = f.id
+        WHERE
+        1=1
+        <if test="fellow!=null">
+            <if test="fellow.xh!=null and fellow.xh!=''">
+                and p.xh = #{fellow.xh}
+            </if>
+            <if test="fellow.xm!=null and fellow.xm!=''">
+                and p.xm = #{fellow.xm}
+            </if>
+            <if test="fellow.xb!=null and fellow.xb!=''">
+                and p.xb = #{fellow.xb}
+            </if>
+            <if test="fellow.xy!=null and fellow.xy!=''">
+                and p.xy = #{fellow.xy}
+            </if>
+            <if test="fellow.xyId!=null and fellow.xyId!=''">
+                and p.xy_id = #{fellow.xyId}
+            </if>
+            <if test="fellow.rxsj!=null and fellow.rxsj!=''">
+                and p.rxsj = #{fellow.rxsj}
+            </if>
+            <if test="fellow.lxsj!=null and fellow.lxsj!=''">
+                and p.lxsj = #{fellow.lxsj}
+            </if>
+            <if test='fellow.status!=null and fellow.status=="0"'>
+                and f.id is null
+            </if>
+        </if>
+        order by p.xm
+    </select>
+</mapper>

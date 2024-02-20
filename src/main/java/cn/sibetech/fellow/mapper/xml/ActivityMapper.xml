@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sibetech.fellow.mapper.ActivityMapper">
+    <select id="queryPage" resultType="cn.sibetech.fellow.domain.Activity">
+        select p.* , i.item_name, d.rs cyrs
+          , case when to_char(sysdate, 'yyyy-MM-dd HH:mi') between p.bm_start_time and p.bm_end_time then 1 else 0 end as bm_flag
+          , i.is_zt
+          from xy_activity p left join xy_activity_item i on p.item_id = i.id left join
+        ( select activity_id, sum(1) as rs FROM xy_activity_fellow d where d.is_valid = '0' group by d.activity_id ) d
+        on p.id = d.activity_id
+        WHERE
+        1=1
+        <if test="dto!=null">
+            <if test="dto.type!=null and dto.type!=''">
+                and p.type = #{dto.type}
+            </if>
+            <if test="dto.name!=null and dto.name!=''">
+                and p.name like '%'||#{dto.name}||'%'
+            </if>
+            <if test="dto.isZt!=null and dto.isZt!=''">
+                and i.is_zt = #{dto.isZt}
+            </if>
+            <if test="dto.id!=null and dto.id!=''">
+                and p.id = #{dto.id}
+            </if>
+        </if>
+        order by p.when_created desc
+    </select>
+
+    <select id="findListByFellowId" resultType="cn.sibetech.fellow.domain.Activity">
+        select p.* , i.item_name, f.is_valid
+        from xy_activity p left join xy_activity_item i on p.item_id = i.id
+        left join   xy_activity_fellow f on p.id = f.activity_id
+         where f.fellow_id = #{fellowId}
+        order by p.when_created desc
+    </select>
+</mapper>
